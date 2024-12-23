@@ -264,7 +264,7 @@ const changeCurrentPassword = asynHandler(async(req,res)=>{
 const getCurrentUser = asynHandler(async(req,res)=>{
   return res
   .status(200)
-  .json(200, req.user,'current user fetched successfully')
+  .json( new ApiResponse(200,{user: req.user} ,'current user fetched successfully'))
 })
 
 //updateaccount
@@ -290,7 +290,7 @@ const updateAccountDetails = asynHandler(async(req,res)=>{
   .json(new ApiResponse(200,'Account details updated successfully'))
 })
 
-//updateavtar
+//updateavatar
 const updateUserAvatar = asynHandler(async(req,res)=>{
   const avatarLocalPath = req.file?.path
 
@@ -391,7 +391,7 @@ const getUserChannelProfile = asynHandler(async(req,res)=>{
         },
         isSubscribed: {
           $cond: {
-            if: {$in: [req.user._id, "$$subscribers.subscriber"]},
+            if: {$in: [req.user._id, "$subscribers.subscriber"]},
             then: true,
             else: false,
           }
@@ -476,6 +476,9 @@ const getWatchHistory = asynHandler(async(req,res)=>{
     )
   )
 })
+
+
+
 export {
   registerUser,
   loginUser,
